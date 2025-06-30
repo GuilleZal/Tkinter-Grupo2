@@ -1,18 +1,26 @@
 import tkinter as tk
+from tkinter import messagebox
+import json
+import os
 
 # FUNCIONES
 def agregar_gasto():
 
-    global total # utilizo la variable total que fue definida fuera de la funcion
-    
+    global total 
+
     var_desc = Descrip_caja.get()
-    var_monto = float(Monto_caja.get())
+    monto_texto = Monto_caja.get()
 
-    if var_desc and var_monto >= 0: # consulto si var_desc no es vacio y si var_monto es mayor a 0
+    try:
+        var_monto = float(monto_texto)
+    except ValueError:
+        messagebox.showerror("Error de Monto", "El monto debe ser un número.")
+        return
 
-        Lista_gastos.insert(tk.END, f"{var_desc}:   ${var_monto}") #Ingresa un nuevo gasto al final de la lista
-        Descrip_caja.delete(0, tk.END) # Borra lo que se encuentra en la caja de texto 
-        Monto_caja.delete(0, tk.END)# Borra lo que se encuentra en la caja de texto 
+    if var_desc and var_monto >= 0:
+        Lista_gastos.insert(tk.END, f"{var_desc}:   ${var_monto}")
+        Descrip_caja.delete(0, tk.END)
+        Monto_caja.delete(0, tk.END)
         total += var_monto
         Total_label.config(text= f"Total: {total}")
 
@@ -74,6 +82,5 @@ Boton_eliminar.pack()
 
 
 ventana.mainloop()
-
 
 
